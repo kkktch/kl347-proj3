@@ -1,0 +1,33 @@
+//
+//  potato.h
+//  potato
+//
+//  Created by Kaidi Lyu on 2/12/20.
+//  Copyright © 2020 Kaidi Lyu. All rights reserved.
+//
+
+#ifndef potato_h
+#define potato_h
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+
+using namespace std;
+
+class potato {
+public:
+    int hop;
+    int port;
+    int ID;
+    vector<char> addr;
+    vector<int> order;
+    
+    potato() {
+        addr.resize(512);
+        order.resize(512);
+    }
+};
+
+
+#endif /* potato_h */
