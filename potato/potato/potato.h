@@ -20,6 +20,7 @@ public:
     int hop;
     int port;
     int ID;
+    int nums;
     vector<char> addr;
     vector<int> trace;
     
