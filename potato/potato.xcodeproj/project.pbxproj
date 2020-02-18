@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0518FED423F9FFB4004AE172 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0518FED323F9FFB4004AE172 /* main.cpp */; };
 		0518FEDC23FA0604004AE172 /* ringmaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0518FEDB23FA0604004AE172 /* ringmaster.cpp */; };
+		055F67B923FAF9CF00DBC194 /* player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 055F67B723FAF9CF00DBC194 /* player.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,7 @@
 		0518FED323F9FFB4004AE172 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		0518FEDA23F9FFCB004AE172 /* potato.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = potato.h; sourceTree = "<group>"; };
 		0518FEDB23FA0604004AE172 /* ringmaster.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ringmaster.cpp; sourceTree = "<group>"; };
+		055F67B723FAF9CF00DBC194 /* player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = player.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				0518FED323F9FFB4004AE172 /* main.cpp */,
 				0518FEDA23F9FFCB004AE172 /* potato.h */,
 				0518FEDB23FA0604004AE172 /* ringmaster.cpp */,
+				055F67B723FAF9CF00DBC194 /* player.cpp */,
 			);
 			path = potato;
 			sourceTree = "<group>";
@@ -126,6 +129,7 @@
 			files = (
 				0518FED423F9FFB4004AE172 /* main.cpp in Sources */,
 				0518FEDC23FA0604004AE172 /* ringmaster.cpp in Sources */,
+				055F67B923FAF9CF00DBC194 /* player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

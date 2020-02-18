@@ -13,6 +13,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/select.h>
+#include <sys/time.h>
 #include <functional>
 #include <cstring>
 #include <arpa/inet.h>
@@ -28,6 +30,7 @@ public:
     int hop_num;
     int curr_status;
     int socket_fd;
+    int accept_fd;
     vector<int> ports;
     vector<int> sockets;
     vector<string> IPAddrs;
@@ -89,7 +92,7 @@ public:
         freeaddrinfo(this->info_list);
     }
     
-    int Start() {
+    static int Start() {
         SetUp(NULL);
         SetPort();
         SetSocket();
@@ -130,18 +133,60 @@ public:
         }
     }
     
+    void SendSockets(potato* currPotato) {
+        for (int i = 0; i < this->player_num; ++i) {
+            if (send(this->sockets[i], currPotato, sizeof(potato), 0) != sizeof(currPotato)) {
+                cerr << "Broken potato\n";
+            }
+        }
+    }
+    
     void GamePlay() {
         potato currPotato;
         currPotato.hop = this->hop_num;
-        if (currPotato.hop == 0) {
+        if (currPotato.hop != 0) {
+            int randPlayer = rand() % this->player_num;
+            cout << "Ready to start the game, sending potato to player" << randPlayer << endl;
+            if (send(this->sockets[randPlayer], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
+                cerr << "Broken potato\n";
+            }
+            fd_set rfd;
+            FD_ZERO(&rfd);
+            int maxFD = INT_MIN;
             for (int i = 0; i < this->player_num; ++i) {
-                if (send(this->sockets[i], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
-                    cerr << "Broken potato\n";
+                FD_SET(this->sockets[i], &rfd);
+                if (this->sockets[i] > maxFD) {
+                    maxFD = this->sockets[i];
                 }
             }
+            int res = select(maxFD + 1, &rfd, NULL, NULL, NULL);
+            if (res < 0) {
+                cerr << "Fail to select\n";
+                exit(EXIT_FAILURE);
+            } else if (res == 0) {
+                cerr << "Time out\n";
+                exit(EXIT_FAILURE);
+            } else{
+                for (int i = 0; i < this->player_num; ++i) {
+                    if (FD_ISSET(this->sockets[i], &rfd)) {
+                        if(recv(this->sockets[i], &currPotato, sizeof(currPotato), MSG_WAITALL) < 0) {
+                            cerr << "Fail to receive a potato\n";
+                            exit(EXIT_FAILURE);
+                        }
+                    }
+                    break;
+                }
+                // Print trace
+                SendSockets(&currPotato);
+            }
+            return;
+        } else {
+            SendSockets(&currPotato);
             return;
         }
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+        
+        
     }
     
     ~ringmaster(){
@@ -151,7 +196,7 @@ public:
         }
     }
     
-    ringmaster(const char** args){
+    ringmaster(char** args){
         this->player_num = atoi(args[2]);
         this->hop_num = atoi(args[3]);
         this->ports.resize(this->player_num);
@@ -159,4 +204,26 @@ public:
         this->IPAddrs.resize(this->player_num);
         this->Start(args[1]);
     }
+    
 };
+
+
+int main(int argc, char** argv) {
+    if (argc < 4) {
+        cerr << "Usage: ./ringmaster <port_num> <num_player> <num_hops>\n";
+        exit(EXIT_FAILURE);
+    }else if (!(atoi(argv[3]) <= 512 && atoi(argv[3]) >= 0)){
+        cerr << "num_hops must be greater than or equal to 0 and less than or equal to 512\n";
+        exit(EXIT_FAILURE);
+    }else if (atoi(argv[2]) <= 1)){
+        cerr << "num_players must be greater than 1\n";
+        exit(EXIT_FAILURE);
+    }else{
+        ringmaster* currMaster = new ringmaster(argv);
+        currMaster->BuildConnection();
+        currMaster->CreatCycle();
+        currMaster->GamePlay();
+        delete currMaster;
+        return EXIT_SUCCESS;
+    }
+}

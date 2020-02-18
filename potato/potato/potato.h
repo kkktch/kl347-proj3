@@ -21,11 +21,11 @@ public:
     int port;
     int ID;
     vector<char> addr;
-    vector<int> order;
+    vector<int> trace;
     
     potato() {
         addr.resize(512);
-        order.resize(512);
+        trace.resize(512);
     }
 };
 
