@@ -72,14 +72,11 @@ public:
     }
     
     void Neigh() {
-        int neighPort;
-        char neighAddr[100];
-        recv(this->master, &neighPort, sizeof(neighPort), MSG_WAITALL);
-        recv(this->master, &neighAddr, sizeof(neighAddr), MSG_WAITALL);
-        
+        MetaInfo currMeta;
+        recv(this->master, &currMeta, sizeof(currMeta), MSG_WAITALL);
         char port_ID[9];
-        sprintf(port_ID, "%d", neighPort);
-        Connect(neighAddr, port_ID, this->neigh);
+        sprintf(port_ID, "%d", currMeta.neighPort);
+        Connect(currMeta.neighAddr, port_ID, this->neigh);
         string IP;
         Connection(IP);
     }

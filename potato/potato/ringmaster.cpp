@@ -30,18 +30,17 @@ void ringmaster::BuildConnection() {
         send(this->sockets[i], &i, sizeof(i), 0);
         send(this->sockets[i], &this->player_num, sizeof(this->player_num), 0);
         recv(this->sockets[i], &this->ports[i], sizeof(this->ports[i]), MSG_WAITALL);
-        cout << "Player " << i << "is ready to play\n";
+        cout << "Player " << i << " is ready to play\n";
     }
 }
 
 void ringmaster::CreatCycle() {
     for (int i = 0; i < this->player_num; ++i) {
         int neighID = (i == this->player_num - 1) ? 0 : i + 1;
-        int neighPort = this->ports[neighID];
-        char neighAddr[100];
-        strcpy(neighAddr, this->IPAddrs[neighID].c_str());
-        send(this->sockets[i], &neighPort, sizeof(neighPort), 0);
-        send(this->sockets[i], &neighAddr, sizeof(neighAddr), 0);
+        MetaInfo currMeta;
+        currMeta.neighPort = this->ports[neighID];
+        strcpy(currMeta.neighAddr, this->IPAddrs[neighID].c_str());
+        send(this->sockets[i], &currMeta, sizeof(currMeta), 0);
     }
 }
 
