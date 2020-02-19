@@ -136,12 +136,12 @@ public:
                     continue;
                 }
                 
-                int randPlayer = rand() % this->player_num;
+                int randPlayer = rand() % this->totalNum;
                 int targetPlayer;
                 if (randPlayer == 0) {
-                    targetPlayer = (this->ID - 1 + this->player_num) % this->player_num;
+                    targetPlayer = (this->ID - 1 + this->totalNum) % this->totalNum;
                 } else {
-                    targetPlayer = (this->ID + 1) % this->player_num;
+                    targetPlayer = (this->ID + 1) % this->totalNum;
                 }
                 cout << "Sending potato to " << targetPlayer << endl;
                 if (send(sockets[rand() % 2], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
