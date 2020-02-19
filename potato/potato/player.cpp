@@ -37,6 +37,7 @@ public:
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
         
+        cout << MasterName << endl << "connect\n" << port << endl;
         this->curr_status = getaddrinfo(MasterName, port, &master_info, &info_list);
         if (this->curr_status != 0) {
             cerr << "Fail to get address info\n";
