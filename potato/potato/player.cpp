@@ -149,7 +149,7 @@ public:
     void init() {
         Neigh();
         Listening();
-        sleep(1);
+        //sleep(1);
     }
     
     player(char* name, char* port) {

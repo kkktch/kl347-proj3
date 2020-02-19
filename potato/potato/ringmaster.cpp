@@ -93,7 +93,7 @@ void ringmaster::GamePlay() {
         return;
     }
     currPotato.Trace();
-    sleep(1);
+    //sleep(1);
 }
 
 ringmaster::ringmaster(char** args){
