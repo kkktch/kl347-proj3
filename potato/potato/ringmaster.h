@@ -24,31 +24,20 @@
 
 using namespace std;
 
-class ringmaster {
+class ringmaster : public server {
 public:
-    struct addrinfo master_info;
-    struct addrinfo* info_list;
     int player_num;
     int hop_num;
-    int curr_status;
-    int socket_fd;
-    int accept_fd;
     vector<int> ports;
     vector<int> sockets;
     vector<string> IPAddrs;
     
-    void SetUp(const char* args);
-    void SetPort();
-    int GetPort();
-    void SetSocket();
-    int Start();
-    void Start(const char* args);
+    
     void BuildConnection();
     void CreatCycle();
     void SendSockets(potato* currPotato);
     void GamePlay();
-    virtual ~ringmaster(){
-        close(this->socket_fd);
+    void Close(){
         for (size_t i = 0; i < sockets.size(); ++i) {
             close(this->sockets[i]);
         }

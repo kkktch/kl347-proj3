@@ -12,14 +12,9 @@ class server {
 public:
     struct addrinfo master_info;
     struct addrinfo* info_list;
-    int player_num;
-    int hop_num;
     int curr_status;
     int socket_fd;
     int accept_fd;
-    vector<int> ports;
-    vector<int> sockets;
-    vector<string> IPAddrs;
     
     void SetUp(const char* args) {
         memset(&master_info, 0, sizeof(master_info));
@@ -38,8 +33,8 @@ public:
     }
 
     void SetPort() {
-        struct sockaddr_in* add_in = (struct sockaddr_in*)this->info_list->ai_addr;
-        add_in->sin_port = 0;
+        struct sockaddr_in* addr_in = (struct sockaddr_in*)this->info_list->ai_addr;
+        addr_in->sin_port = 0;
     }
 
     int GetPort() {
@@ -63,7 +58,7 @@ public:
         
         int opt = 1;
         this->curr_status = setsockopt(this->socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-        this->curr_status = ::bind(this->socket_fd, this->info_list->ai_addr, this->info_list->ai_addrlen);
+        this->curr_status = bind(this->socket_fd, this->info_list->ai_addr, this->info_list->ai_addrlen);
         if (this->curr_status == -1) {
             cerr << "Fail to bind socket\n";
             exit(EXIT_FAILURE);
@@ -89,6 +84,23 @@ public:
     void Start(const char* args) {
         SetUp(args);
         SetSocket();
+    }
+    
+    void connection(string &IP){
+        struct sockaddr_storage socket_addr;
+        socklen_t len = sizeof(socket_addr);
+        this->accept_fd = accept(this->socket_fd, (struct sockaddr*)&socket_addr, &len);
+        if (this->accept_fd == -1) {
+            cerr <"Fail to connect\n";
+            exit(EXIT_FAILURE);
+        }
+        struct sockaddr_in* temp = (struct sockaddr_in*)&socket_addr;
+        IP = inet_ntoa(temp->sin_addr);
+        return this->accept_fd;
+    }
+    
+    virtual ~server() {
+        close(this->socket_fd);
     }
 };
 

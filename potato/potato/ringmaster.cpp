@@ -23,88 +23,9 @@
 
 using namespace std;
 
-
-
-void ringmaster::SetUp(const char* args) {
-    memset(&master_info, 0, sizeof(master_info));
-    master_info.ai_family = AF_UNSPEC;
-    master_info.ai_socktype = SOCK_STREAM;
-    master_info.ai_flags = AI_PASSIVE;
-    if (args != NULL) {
-        this->curr_status = getaddrinfo(NULL, args, &master_info, &info_list);
-    } else {
-        this->curr_status = getaddrinfo(NULL, NULL, &master_info, &info_list);
-    }
-    if (this->curr_status != 0) {
-        cerr << "Can't get correct address\n";
-        exit(EXIT_FAILURE);
-    }
-}
-
-void ringmaster::SetPort() {
-    struct sockaddr_in* add_in = (struct sockaddr_in*)this->info_list->ai_addr;
-    add_in->sin_port = 0;
-}
-
-int ringmaster::GetPort() {
-    struct sockaddr_in sockin;
-    socklen_t length = sizeof(sockin);
-    int portID = 0;
-    if (getsockname(this->socket_fd, (struct sockaddr*)&sockin, &length) == -1) {
-        cerr << "getsockname() failed\n";
-        exit(EXIT_FAILURE);
-    }
-    portID = ntohs(sockin.sin_port);
-    return portID;
-}
-
-void ringmaster::SetSocket() {
-    this->socket_fd = socket(this->info_list->ai_family, this->info_list->ai_socktype, this->info_list->ai_protocol);
-    if (this->socket_fd == -1) {
-        cerr << "Fail to set socket\n";
-        exit(EXIT_FAILURE);
-    }
-    
-    int opt = 1;
-    this->curr_status = setsockopt(this->socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-    this->curr_status = ::bind(this->socket_fd, this->info_list->ai_addr, this->info_list->ai_addrlen);
-    if (this->curr_status == -1) {
-        cerr << "Fail to bind socket\n";
-        exit(EXIT_FAILURE);
-    }
-    
-    this->curr_status = listen(this->socket_fd, 100);
-    if (this->curr_status == -1) {
-        cerr << "Fail to listen on socket\n";
-        exit(EXIT_FAILURE);
-    }
-    
-    freeaddrinfo(this->info_list);
-}
-
-int ringmaster::Start() {
-    SetUp(NULL);
-    SetPort();
-    SetSocket();
-    int currPort = GetPort();
-    return currPort;
-}
-
-void ringmaster::Start(const char* args) {
-    SetUp(args);
-    SetSocket();
-}
-
 void ringmaster::BuildConnection() {
     for (size_t i = 0; i < this->sockets.size(); ++i) {
-        struct sockaddr_storage sockaddr;
-        socklen_t len = sizeof(sockaddr);
-        this->sockets[i] = accept(this->socket_fd, (struct sockaddr*)&sockaddr, &len);
-        if (this->sockets[i] == -1) {
-            return;
-        }
-        struct sockaddr_in* IPtemp = (struct sockaddr_in*)&sockaddr;
-        this->IPAddrs[i] = inet_ntoa(IPtemp->sin_addr);
+        this->sockets[i] = connection(this->IPAddrs[i]);
         send(this->sockets[i], &i, sizeof(i), 0);
         send(this->sockets[i], &this->player_num, sizeof(this->player_num), 0);
         recv(this->sockets[i], &this->ports[i], sizeof(this->ports[i]), MSG_WAITALL);
@@ -123,9 +44,9 @@ void ringmaster::CreatCycle() {
     }
 }
 
-void ringmaster::SendSockets(potato* currPotato) {
+void ringmaster::SendSockets(potato currPotato) {
     for (int i = 0; i < this->player_num; ++i) {
-        if (send(this->sockets[i], currPotato, sizeof(potato), 0) != sizeof(currPotato)) {
+        if (send(this->sockets[i], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
             cerr << "Broken potato\n";
         }
     }
@@ -142,14 +63,14 @@ void ringmaster::GamePlay() {
         }
         fd_set rfd;
         FD_ZERO(&rfd);
-        int maxFD = -1;
+        int maxFD = 0;
         for (int i = 0; i < this->player_num; ++i) {
             FD_SET(this->sockets[i], &rfd);
             if (this->sockets[i] > maxFD) {
                 maxFD = this->sockets[i];
             }
         }
-        int res = select(maxFD + 1, &rfd, NULL, NULL, NULL);
+        int res = select(this->accept_fd + 1, &rfd, NULL, NULL, NULL);
         if (res < 0) {
             cerr << "Fail to select\n";
             exit(EXIT_FAILURE);
@@ -163,15 +84,14 @@ void ringmaster::GamePlay() {
                         cerr << "Fail to receive a potato\n";
                         exit(EXIT_FAILURE);
                     }
+                    SendSockets(currPotato);
+                    break;
                 }
-                break;
             }
-            // Print trace
-            SendSockets(&currPotato);
+            return;
         }
-        return;
     } else {
-        SendSockets(&currPotato);
+        SendSockets(currPotato);
         return;
     }
 }
@@ -201,10 +121,13 @@ int main(int argc, char** argv) {
     }else{
         ringmaster* currMaster;
         currMaster->init(argv);
+        cout << "Potato Ringmaster\n";
+        cout << "Players = " << this->player_num << endl;
+        cout << "Hops = " << this->hop_num << endl;
         currMaster->BuildConnection();
         currMaster->CreatCycle();
         currMaster->GamePlay();
-        delete currMaster;
+        currMaster->Close();
         return EXIT_SUCCESS;
     }
 }
