@@ -62,7 +62,6 @@ public:
     }
     
     void Master(const char* MasterName, const char* port) {
-        cout << MasterName << endl << port << endl;
         Connect(MasterName, port, this->master);
         recv(this->master, &this->ID, sizeof(ID), 0);
         recv(this->master, &this->totalNum, sizeof(totalNum), 0);
@@ -153,7 +152,6 @@ public:
     }
     
     player(char* name, char* port) {
-        cout << name << endl << port << endl;
         Master(name, port);
     }
     

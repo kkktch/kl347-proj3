@@ -83,7 +83,7 @@ void ringmaster::GamePlay() {
                 if (FD_ISSET(this->sockets[i], &rfd)) {
                     if(recv(this->sockets[i], &currPotato, sizeof(currPotato), MSG_WAITALL) < 0) {
                         cerr << "Fail to receive a potato\n";
-                        exit(EXIT_FAILURE);
+                        //exit(EXIT_FAILURE);
                     }
                     SendSockets(currPotato);
                     break;
