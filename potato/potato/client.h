@@ -2,8 +2,8 @@
 //  client.h
 //  potato
 //
-//  Created by Kaidi Lyu on 2/14/20.
-//  Copyright © 2020 Kaidi Lyu. All rights reserved.
+//  Created by Kaidi Lyu on 2/19/20.
+//  Copyright © 2020 吕凯迪. All rights reserved.
 //
 
 #ifndef client_h
@@ -21,11 +21,44 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "potato.h"
-#include "server.h"
-#include "ringmaster.h"
 
-class clent {
+class client {
+public:
+    int ID;
+    int totalNum;
+    int master;
+    int neigh;
     
+    void Connect(const char* MasterName, const char* port, int& sockets) {
+        struct addrinfo master_info;
+        struct addrinfo* info_list;
+        memset(&master_info, 0, sizeof(master_info));
+        master_info.ai_family = AF_UNSPEC;
+        master_info.ai_socktype = SOCK_STREAM;
+        
+        int status = getaddrinfo(MasterName, port, &master_info, &info_list);
+        if (status != 0) {
+            cerr << "Fail to get address info\n";
+            cerr << "Master name: " << MasterName << ", port: " << port << endl;
+            exit(EXIT_FAILURE);
+        }
+        
+        sockets = socket(info_list->ai_family, info_list->ai_socktype, info_list->ai_protocol);
+        if (sockets == -1) {
+            cerr << "Fail to set socket\n";
+            exit(EXIT_FAILURE);
+        }
+        
+        status = connect(sockets, info_list->ai_addr, info_list->ai_addrlen);
+        if (status == -1) {
+            cerr << "Fail to connect to socket\n";
+            exit(EXIT_FAILURE);
+        }
+        
+        freeaddrinfo(info_list);
+        
+    }
 }
+
 
 #endif /* client_h */

@@ -19,46 +19,13 @@
 #include <arpa/inet.h>
 #include "potato.h"
 #include "server.h"
+#include "client.h"
 #include "ringmaster.h"
 
 using namespace std;
 
-class player : public server {
+class player : public server, public client {
 public:
-    int ID;
-    int totalNum;
-    int master;
-    int neigh;
-    
-    void Connect(const char* MasterName, const char* port, int& sockets) {
-        struct addrinfo master_info;
-        struct addrinfo* info_list;
-        memset(&master_info, 0, sizeof(master_info));
-        master_info.ai_family = AF_UNSPEC;
-        master_info.ai_socktype = SOCK_STREAM;
-        
-        this->curr_status = getaddrinfo(MasterName, port, &master_info, &info_list);
-        if (this->curr_status != 0) {
-            cerr << "Fail to get address info\n";
-            cerr << "Master name: " << MasterName << ", port: " << port << endl;
-            exit(EXIT_FAILURE);
-        }
-        
-        sockets = socket(info_list->ai_family, info_list->ai_socktype, info_list->ai_protocol);
-        if (sockets == -1) {
-            cerr << "Fail to set socket\n";
-            exit(EXIT_FAILURE);
-        }
-        
-        this->curr_status = connect(sockets, info_list->ai_addr, info_list->ai_addrlen);
-        if (this->curr_status == -1) {
-            cerr << "Fail to connect to socket\n";
-            exit(EXIT_FAILURE);
-        }
-        
-        freeaddrinfo(info_list);
-        
-    }
     
     void Master(const char* MasterName, const char* port) {
         Connect(MasterName, port, this->master);
