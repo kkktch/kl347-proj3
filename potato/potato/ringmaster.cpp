@@ -64,14 +64,10 @@ void ringmaster::GamePlay() {
         }
         fd_set rfd;
         FD_ZERO(&rfd);
-        int maxFD = 0;
         for (int i = 0; i < this->player_num; ++i) {
             FD_SET(this->sockets[i], &rfd);
-            if (this->sockets[i] > maxFD) {
-                maxFD = this->sockets[i];
-            }
         }
-        int res = select(maxFD, &rfd, NULL, NULL, NULL);
+        int res = select(this->accept_fd + 1, &rfd, NULL, NULL, NULL);
         if (res < 0) {
             cerr << "Fail to select\n";
             exit(EXIT_FAILURE);
