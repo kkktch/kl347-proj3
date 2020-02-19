@@ -71,7 +71,7 @@ void ringmaster::GamePlay() {
                 maxFD = this->sockets[i];
             }
         }
-        int res = select(this->accept_fd + 1, &rfd, NULL, NULL, NULL);
+        int res = select(maxFD, &rfd, NULL, NULL, NULL);
         if (res < 0) {
             cerr << "Fail to select\n";
             exit(EXIT_FAILURE);
@@ -81,15 +81,13 @@ void ringmaster::GamePlay() {
         } else{
             for (int i = 0; i < this->player_num; ++i) {
                 if (FD_ISSET(this->sockets[i], &rfd)) {
-                    if(recv(this->sockets[i], &currPotato, sizeof(currPotato), MSG_WAITALL) < 0) {
+                    if(recv(this->sockets[i], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
                         cerr << "Fail to receive a potato\n";
-                        //exit(EXIT_FAILURE);
                     }
                     SendSockets(currPotato);
                     break;
                 }
             }
-            return;
         }
     } else {
         SendSockets(currPotato);
