@@ -122,8 +122,8 @@ int main(int argc, char** argv) {
         ringmaster* currMaster;
         currMaster->init(argv);
         cout << "Potato Ringmaster\n";
-        cout << "Players = " << this->player_num << endl;
-        cout << "Hops = " << this->hop_num << endl;
+        cout << "Players = " << currMaster->player_num << endl;
+        cout << "Hops = " << currMaster->hop_num << endl;
         currMaster->BuildConnection();
         currMaster->CreatCycle();
         currMaster->GamePlay();

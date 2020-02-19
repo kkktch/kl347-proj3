@@ -21,6 +21,7 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "potato.h"
+#include "server.h"
 
 using namespace std;
 
