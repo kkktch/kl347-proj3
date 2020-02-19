@@ -142,7 +142,7 @@ void ringmaster::GamePlay() {
         }
         fd_set rfd;
         FD_ZERO(&rfd);
-        int maxFD = INT_MIN;
+        int maxFD = -1;
         for (int i = 0; i < this->player_num; ++i) {
             FD_SET(this->sockets[i], &rfd);
             if (this->sockets[i] > maxFD) {
