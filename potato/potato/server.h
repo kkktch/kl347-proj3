@@ -21,10 +21,10 @@ public:
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
         master_info.ai_flags = AI_PASSIVE;
-        if (args != NULL) {
+        if (args != "") {
             this->curr_status = getaddrinfo(NULL, args, &master_info, &info_list);
         } else {
-            this->curr_status = getaddrinfo(NULL, NULL, &master_info, &info_list);
+            this->curr_status = getaddrinfo(NULL, "", &master_info, &info_list);
         }
         if (this->curr_status != 0) {
             cerr << "Can't get correct address\n";

@@ -66,6 +66,7 @@ public:
         
         int ListenPort = Start();
         send(this->master, &ListenPort, sizeof(int), 0);
+        cout << "Connected as player " << this->ID << " out of " << this->totalNum << " total players\n";
     }
     
     void Neigh() {
