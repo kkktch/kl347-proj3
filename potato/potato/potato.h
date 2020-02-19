@@ -33,7 +33,7 @@ public:
 class MetaInfo {
 public:
     int neighPort;
-    char neighADDR[100];
-}
+    char neighAddr[100];
+};
 
 #endif /* potato_h */
