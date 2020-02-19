@@ -166,6 +166,7 @@ int main(int argc, char** argv) {
         cout << "Usage: ./player <machine_name> <port_num>\n";
         exit(EXIT_FAILURE);
     } else {
+        cout << argv[1] << endl << argv[2] << endl;
         player* currPlayer = new player(argv[1], argv[2]);
         currPlayer->init();
         delete currPlayer;
