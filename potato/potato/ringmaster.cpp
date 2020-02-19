@@ -92,6 +92,7 @@ void ringmaster::GamePlay() {
         SendSockets(currPotato);
         return;
     }
+    currPotato.Trace();
     sleep(1);
 }
 
