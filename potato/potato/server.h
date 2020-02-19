@@ -91,7 +91,7 @@ public:
         socklen_t len = sizeof(socket_addr);
         this->accept_fd = accept(this->socket_fd, (struct sockaddr*)&socket_addr, &len);
         if (this->accept_fd == -1) {
-            cerr <"Fail to connect\n";
+            cerr << "Fail to connect\n";
             exit(EXIT_FAILURE);
         }
         struct sockaddr_in* temp = (struct sockaddr_in*)&socket_addr;
