@@ -25,7 +25,7 @@
 using namespace std;
 
 void ringmaster::BuildConnection() {
-    for (size_t i = 0; i < this->sockets.size(); ++i) {
+    for (int i = 0; i < this->player_num; ++i) {
         this->sockets[i] = Connection(this->IPAddrs[i]);
         send(this->sockets[i], &i, sizeof(i), 0);
         send(this->sockets[i], &this->player_num, sizeof(this->player_num), 0);
@@ -58,7 +58,7 @@ void ringmaster::GamePlay() {
     currPotato.hop = this->hop_num;
     if (currPotato.hop != 0) {
         int randPlayer = rand() % this->player_num;
-        cout << "Ready to start the game, sending potato to player" << randPlayer << endl;
+        cout << "Ready to start the game, sending potato to player " << randPlayer << endl;
         if (send(this->sockets[randPlayer], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
             cerr << "Broken potato\n";
         }
@@ -92,6 +92,7 @@ void ringmaster::GamePlay() {
         SendSockets(currPotato);
         return;
     }
+    sleep(1);
 }
 
 ringmaster::ringmaster(char** args){

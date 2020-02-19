@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -22,12 +23,28 @@ public:
     int ID;
     int nums;
     vector<char> addr;
-    vector<int> trace;
+    int trace[512];
     
     potato() {
-        addr.resize(512);
-        trace.resize(512);
+        hop = 0;
+        nums = 0;
+        memset(trace, 0, sizeof(trace));
+        //addr.resize(512);
+        //trace.resize(512);
     }
+    
+    void Trace() {
+        cout << "Trace of potato:\n";
+        for (int i = 0; i < nums; ++i) {
+            cout << trace[i];
+            if (i == nums - 1) {
+                cout << endl;
+            } else {
+                cout << ',';
+            }
+        }
+    }
+    
 };
 
 

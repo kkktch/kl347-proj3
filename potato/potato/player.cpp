@@ -37,7 +37,6 @@ public:
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
         
-        cout << MasterName << endl << "connect\n" << port << endl;
         this->curr_status = getaddrinfo(MasterName, port, &master_info, &info_list);
         if (this->curr_status != 0) {
             cerr << "Fail to get address info\n";
@@ -63,11 +62,11 @@ public:
     
     void Master(const char* MasterName, const char* port) {
         Connect(MasterName, port, this->master);
-        recv(this->master, &this->ID, sizeof(ID), 0);
-        recv(this->master, &this->totalNum, sizeof(totalNum), 0);
+        recv(this->master, &ID, sizeof(ID), 0);
+        recv(this->master, &totalNum, sizeof(totalNum), 0);
         
         int ListenPort = Start();
-        send(this->master, &ListenPort, sizeof(int), 0);
+        send(this->master, &ListenPort, sizeof(ListenPort), 0);
         cout << "Connected as player " << this->ID << " out of " << this->totalNum << " total players\n";
     }
     
@@ -85,6 +84,7 @@ public:
     }
     
     void Listening() {
+        srand((unsigned int)time(NULL) + ID);
         potato currPotato;
         fd_set rfd;
         int sockets[] = {this->accept_fd, this->neigh, this->master};
@@ -149,6 +149,7 @@ public:
     void init() {
         Neigh();
         Listening();
+        sleep(1);
     }
     
     player(char* name, char* port) {

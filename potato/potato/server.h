@@ -55,7 +55,7 @@ public:
         
         int opt = 1;
         this->curr_status = setsockopt(this->socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-        this->curr_status = bind(this->socket_fd, this->info_list->ai_addr, this->info_list->ai_addrlen);
+        this->curr_status = ::bind(this->socket_fd, this->info_list->ai_addr, this->info_list->ai_addrlen);
         if (this->curr_status == -1) {
             cerr << "Fail to bind socket\n";
             exit(EXIT_FAILURE);
