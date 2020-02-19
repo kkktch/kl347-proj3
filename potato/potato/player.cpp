@@ -26,7 +26,7 @@ using namespace std;
 class player : public server {
 public:
     int ID;
-    int totalNum;
+    int totalNum = 2;
     int master;
     int neigh;
     
