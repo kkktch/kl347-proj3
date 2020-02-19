@@ -43,8 +43,8 @@ public:
             exit(EXIT_FAILURE);
         }
         
-        sockets = socket(AF_UNSPEC, SOCK_STREAM, info_list->ai_protocol);
-        if (sockets != -1) {
+        sockets = socket(info_list->ai_family, info_list->ai_socktype, info_list->ai_protocol);
+        if (sockets == -1) {
             cerr << "Fail to set socket\n";
             exit(EXIT_FAILURE);
         }
@@ -78,15 +78,7 @@ public:
         sprintf(port_ID, "%d", neighPort);
         Connect(neighAddr, port_ID, this->neigh);
         string IP;
-        struct sockaddr_storage sockaddr;
-        socklen_t len = sizeof(sockaddr);
-        this->accept_fd = accept(this->socket_fd, (struct sockaddr*)&sockaddr, &len);
-        if (this->accept_fd == -1) {
-            cerr << "Fail to accept\n";
-            exit(EXIT_FAILURE);
-        }
-        struct sockaddr_in* temp = (struct sockaddr_in*)&sockaddr;
-        IP = inet_ntoa(temp->sin_addr);
+        Connection(IP);
     }
     
     void Listening() {
@@ -136,7 +128,7 @@ public:
                     continue;
                 }
                 
-                int randPlayer = rand() % this->totalNum;
+                int randPlayer = rand() % 2;
                 int targetPlayer;
                 if (randPlayer == 0) {
                     targetPlayer = (this->ID - 1 + this->totalNum) % this->totalNum;
@@ -144,7 +136,7 @@ public:
                     targetPlayer = (this->ID + 1) % this->totalNum;
                 }
                 cout << "Sending potato to " << targetPlayer << endl;
-                if (send(sockets[rand() % 2], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
+                if (send(sockets[randPlayer], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
                     cerr << "Fail to send\n";
                 }
             }
