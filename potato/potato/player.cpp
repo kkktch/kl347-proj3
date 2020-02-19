@@ -37,9 +37,10 @@ public:
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
         
-        int res = getaddrinfo(MasterName, port, &master_info, &info_list);
-        if (res != 0) {
-            cerr << "Fail to get address infor\n";
+        this->curr_status = getaddrinfo(MasterName, port, &master_info, &info_list);
+        if (this->curr_status != 0) {
+            cerr << "Fail to get address info\n";
+            cerr << "Master name: " << MasterName << ", port: " << port << endl;
             exit(EXIT_FAILURE);
         }
         
@@ -49,8 +50,8 @@ public:
             exit(EXIT_FAILURE);
         }
         
-        res = connect(sockets, info_list->ai_addr, info_list->ai_addrlen);
-        if (res == -1) {
+        this->curr_status = connect(sockets, info_list->ai_addr, info_list->ai_addrlen);
+        if (this->curr_status == -1) {
             cerr << "Fail to connect to socket\n";
             exit(EXIT_FAILURE);
         }
