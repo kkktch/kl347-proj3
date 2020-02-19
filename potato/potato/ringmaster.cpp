@@ -80,6 +80,8 @@ void ringmaster::GamePlay() {
                     int len = 0;
                     if((len = recv(this->sockets[i], &currPotato, sizeof(currPotato), MSG_WAITALL)) != sizeof(currPotato)) {
                         cout << "length: " << len << endl;
+                        cout << i << endl;
+                        cout << this->sockets[i] << endl;
                         cerr << "Fail to receive a potato\n";
                     }
                     SendSockets(currPotato);
