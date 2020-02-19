@@ -42,7 +42,7 @@ public:
             close(this->sockets[i]);
         }
     }
-    void  init(char** args);
+    ringmaster(char** args);
 };
     
 

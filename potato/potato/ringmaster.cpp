@@ -96,7 +96,7 @@ void ringmaster::GamePlay() {
     }
 }
 
-void  ringmaster::init(char** args){
+void  ringmaster::ringmaster(char** args){
     this->player_num = atoi(args[2]);
     this->hop_num = atoi(args[3]);
     this->ports.resize(this->player_num);
@@ -119,8 +119,7 @@ int main(int argc, char** argv) {
         cerr << "num_players must be greater than 1\n";
         exit(EXIT_FAILURE);
     }else{
-        ringmaster* currMaster;
-        currMaster->init(argv);
+        ringmaster* currMaster = new ringmaster(argv);
         cout << "Potato Ringmaster\n";
         cout << "Players = " << this->player_num << endl;
         cout << "Hops = " << this->hop_num << endl;
@@ -128,6 +127,7 @@ int main(int argc, char** argv) {
         currMaster->CreatCycle();
         currMaster->GamePlay();
         currMaster->Close();
+        delete currMaster;
         return EXIT_SUCCESS;
     }
 }
