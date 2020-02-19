@@ -18,11 +18,12 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "potato.h"
+#include "server.h"
 #include "ringmaster.h"
 
 using namespace std;
 
-class player : public ringmaster {
+class player : public server {
 public:
     int ID;
     int totalNum;
@@ -63,7 +64,7 @@ public:
         recv(this->master, &this->ID, sizeof(ID), 0);
         recv(this->master, &this->totalNum, sizeof(totalNum), 0);
         
-        int ListenPort = this->Start();
+        int ListenPort = Start();
         send(this->master, &ListenPort, sizeof(int), 0);
     }
     
