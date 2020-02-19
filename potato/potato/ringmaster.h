@@ -36,7 +36,7 @@ public:
     
     void BuildConnection();
     void CreatCycle();
-    void SendSockets(potato* currPotato);
+    void SendSockets(potato currPotato);
     void GamePlay();
     void Close(){
         for (size_t i = 0; i < sockets.size(); ++i) {
