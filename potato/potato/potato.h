@@ -30,10 +30,5 @@ public:
     }
 };
 
-class MetaInfo {
-public:
-    int neighPort;
-    char neighAddr[100];
-};
 
 #endif /* potato_h */
