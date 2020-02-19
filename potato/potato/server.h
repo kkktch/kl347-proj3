@@ -86,7 +86,7 @@ public:
         SetSocket();
     }
     
-    void connection(string &IP){
+    void Connection(string &IP){
         struct sockaddr_storage socket_addr;
         socklen_t len = sizeof(socket_addr);
         this->accept_fd = accept(this->socket_fd, (struct sockaddr*)&socket_addr, &len);

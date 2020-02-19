@@ -20,12 +20,13 @@
 #include <arpa/inet.h>
 #include "potato.h"
 #include "ringmaster.h"
+#include "server.h"
 
 using namespace std;
 
 void ringmaster::BuildConnection() {
     for (size_t i = 0; i < this->sockets.size(); ++i) {
-        this->sockets[i] = connection(this->IPAddrs[i]);
+        this->sockets[i] = Connection(this->IPAddrs[i]);
         send(this->sockets[i], &i, sizeof(i), 0);
         send(this->sockets[i], &this->player_num, sizeof(this->player_num), 0);
         recv(this->sockets[i], &this->ports[i], sizeof(this->ports[i]), MSG_WAITALL);
