@@ -90,6 +90,6 @@ public:
         SetUp(args);
         SetSocket();
     }
-}
+};
 
 #endif /* server_h */
