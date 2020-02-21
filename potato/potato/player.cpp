@@ -105,9 +105,9 @@ public:
                 int randPlayer = rand() % 2;
                 int targetPlayer;
                 if (randPlayer == 0) {
-                    targetPlayer = (ID == 0) ? totalNum-1 : ID - 1;
+                    targetPlayer = this->accept_fd;
                 } else {
-                    targetPlayer = (ID == totalNum-1) ? 0 : ID + 1;
+                    targetPlayer = this->neigh;
                 }
                 cout << "Sending potato to " << targetPlayer << endl;
                 if (send(targetPlayer, &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
