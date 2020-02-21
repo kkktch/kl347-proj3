@@ -43,7 +43,7 @@ public:
         recv(this->master, &neighPort, sizeof(neighPort), MSG_WAITALL);
         recv(this->master, &neighAddr, sizeof(neighAddr), MSG_WAITALL);
         
-        char port_ID[9];
+        char port_ID[10];
         sprintf(port_ID, "%d", neighPort);
         Connect(neighAddr, port_ID, this->neigh);
         string IP;
