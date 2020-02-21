@@ -99,7 +99,7 @@ public:
                         cerr << "Fail to send\n";
                     }
                     cout << "I'm it\n";
-                    break;
+                    continue;
                 }
                 
                 int randPlayer = rand() % 2;
