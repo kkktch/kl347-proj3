@@ -28,9 +28,7 @@ class player : public server, public client {
 public:
     
     void Master(const char* MasterName, const char* port) {
-        struct addrinfo master_info;
-        struct addrinfo* info_list;
-        Connect(MasterName, port, this->master, master_info, info_list);
+        Connect(MasterName, port, this->master);
         recv(this->master, &ID, sizeof(ID), 0);
         recv(this->master, &totalNum, sizeof(totalNum), 0);
         
@@ -46,10 +44,8 @@ public:
         recv(this->master, &neighAddr, sizeof(neighAddr), MSG_WAITALL);
         
         char port_ID[10];
-        struct addrinfo master_info;
-        struct addrinfo* info_list;
         sprintf(port_ID, "%d", neighPort);
-        Connect(neighAddr, port_ID, this->neigh, master_info, info_list);
+        Connect(neighAddr, port_ID, this->neigh);
         string IP;
         Connection(IP);
     }
