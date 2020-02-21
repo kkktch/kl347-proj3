@@ -53,6 +53,7 @@ public:
     void Listening() {
         srand((unsigned int)time(NULL) + ID);
         potato currPotato;
+        struct timeval tv;
         fd_set rfd;
         int nfd = 1;
         if (this->accept_fd > this->neigh) {
@@ -65,7 +66,9 @@ public:
             FD_SET(this->accept_fd, &rfd);
             FD_SET(this->neigh, &rfd);
             FD_SET(this->master, &rfd);
-            int res = select(nfd, &rfd, NULL, NULL, NULL);
+            tv.tv_sec = 5;
+            tv.tv_usec = 0;
+            int res = select(nfd, &rfd, NULL, NULL, &tv);
             if (res < 0) {
                 cerr << "Fail to select\n";
                 exit(EXIT_FAILURE);
