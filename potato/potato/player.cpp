@@ -110,7 +110,7 @@ public:
                     targetPlayer = this->neigh;
                 }
                 cout << "Sending potato to " << targetPlayer << endl;
-                if (send(sockets[randPlayer], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
+                if (send(targetPlayer, &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
                     cerr << "Fail to send\n";
                 }
             }
