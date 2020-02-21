@@ -1,6 +1,5 @@
 CC=g++
-CFLAGS=   #-pedantic -Werror -Wall #-O3 -fPIC  -lpthread
-#CFLAGS=-ggdb3 -fPIC
+CFLAGS= -pedantic
 
 all: ringmaster player
 
