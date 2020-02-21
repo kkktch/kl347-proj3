@@ -22,7 +22,7 @@ public:
         master_info.ai_socktype = SOCK_STREAM;
         master_info.ai_flags = AI_PASSIVE;
         if (strcmp(args, "") == 0) {
-            this->curr_status = getaddrinfo(NULL, "", &master_info, &info_list);
+            this->curr_status = getaddrinfo(NULL, NULL, &master_info, &info_list);
         } else {
             this->curr_status = getaddrinfo(NULL, args, &master_info, &info_list);
         }

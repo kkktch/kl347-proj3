@@ -10,6 +10,7 @@
 		0518FED423F9FFB4004AE172 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0518FED323F9FFB4004AE172 /* main.cpp */; };
 		0518FEDC23FA0604004AE172 /* ringmaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0518FEDB23FA0604004AE172 /* ringmaster.cpp */; };
 		055F67B923FAF9CF00DBC194 /* player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 055F67B723FAF9CF00DBC194 /* player.cpp */; };
+		0560E05923FDEF610047967D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 0560E05823FDEF600047967D /* Makefile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +31,9 @@
 		0518FEDA23F9FFCB004AE172 /* potato.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = potato.h; sourceTree = "<group>"; };
 		0518FEDB23FA0604004AE172 /* ringmaster.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ringmaster.cpp; sourceTree = "<group>"; };
 		055F67B723FAF9CF00DBC194 /* player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = player.cpp; sourceTree = "<group>"; };
+		0560E05623FDE7130047967D /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server.h; sourceTree = "<group>"; };
+		0560E05723FDECE60047967D /* client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
+		0560E05823FDEF600047967D /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		0569F62223FC5D7400636424 /* ringmaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ringmaster.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,11 +67,14 @@
 		0518FED223F9FFB4004AE172 /* potato */ = {
 			isa = PBXGroup;
 			children = (
+				0560E05823FDEF600047967D /* Makefile */,
+				0560E05623FDE7130047967D /* server.h */,
 				0518FED323F9FFB4004AE172 /* main.cpp */,
 				0518FEDA23F9FFCB004AE172 /* potato.h */,
 				0518FEDB23FA0604004AE172 /* ringmaster.cpp */,
 				055F67B723FAF9CF00DBC194 /* player.cpp */,
 				0569F62223FC5D7400636424 /* ringmaster.h */,
+				0560E05723FDECE60047967D /* client.h */,
 			);
 			path = potato;
 			sourceTree = "<group>";
@@ -131,6 +138,7 @@
 			files = (
 				0518FED423F9FFB4004AE172 /* main.cpp in Sources */,
 				0518FEDC23FA0604004AE172 /* ringmaster.cpp in Sources */,
+				0560E05923FDEF610047967D /* Makefile in Sources */,
 				055F67B923FAF9CF00DBC194 /* player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
