@@ -105,9 +105,9 @@ public:
                 int randPlayer = rand() % 2;
                 int targetPlayer;
                 if (randPlayer == 0) {
-                    targetPlayer = (this->ID - 1 + this->totalNum) % this->totalNum;
+                    targetPlayer = this->accept_fd;
                 } else {
-                    targetPlayer = (this->ID + 1) % this->totalNum;
+                    targetPlayer = this->neigh;
                 }
                 cout << "Sending potato to " << targetPlayer << endl;
                 if (send(sockets[randPlayer], &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
