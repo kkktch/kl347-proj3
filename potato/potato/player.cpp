@@ -78,12 +78,17 @@ public:
                 cerr << "Time out\n";
                 exit(EXIT_FAILURE);
             } else{
-                for (int i = 0; i < 3; ++i) {
-                    if (FD_ISSET(sockets[i], &rfd)) {
-                        if (recv(sockets[i], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
-                            cerr << "Receive a broken potato\n";
-                        }
-                        break;
+                if (FD_ISSET(sockets[0], &rfd)) {
+                    if (recv(sockets[0], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
+                        cerr << "Receive a broken potato\n";
+                    }
+                } else if (FD_ISSET(sockets[1], &rfd)) {
+                    if (recv(sockets[0], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
+                        cerr << "Receive a broken potato\n";
+                    }
+                } else if (FD_ISSET(sockets[2], &rfd)) {
+                    if (recv(sockets[2], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
+                        cerr << "Receive a broken potato\n";
                     }
                 }
                 
