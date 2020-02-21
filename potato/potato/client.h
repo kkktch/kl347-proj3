@@ -3,7 +3,7 @@
 //  potato
 //
 //  Created by Kaidi Lyu on 2/19/20.
-//  Copyright © 2020 吕凯迪. All rights reserved.
+//  Copyright © 2020 Kaidi Lyu. All rights reserved.
 //
 
 #ifndef client_h
@@ -30,8 +30,7 @@ public:
     int master;
     int neigh;
     
-    void Connect(const char* MasterName, const char* port, int& sockets) {
-        struct addrinfo master_info;
+    void Connect(const char* MasterName, const char* port, int& sockets, struct addrinfo master_info) {
         struct addrinfo* info_list;
         bzero(&master_info, sizeof(master_info));
         master_info.ai_family = AF_UNSPEC;
