@@ -83,7 +83,7 @@ public:
                         cerr << "Receive a broken potato\n";
                     }
                 } else if (FD_ISSET(sockets[1], &rfd)) {
-                    if (recv(sockets[0], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
+                    if (recv(sockets[1], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
                         cerr << "Receive a broken potato\n";
                     }
                 } else if (FD_ISSET(sockets[2], &rfd)) {
