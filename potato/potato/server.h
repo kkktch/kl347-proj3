@@ -21,7 +21,7 @@ public:
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
         master_info.ai_flags = AI_PASSIVE;
-        if (strcmp(args, "") == 0) {
+        if (strcmp(args, NULL) == 0) {
             this->curr_status = getaddrinfo(NULL, "", &master_info, &info_list);
         } else {
             this->curr_status = getaddrinfo(NULL, args, &master_info, &info_list);
@@ -41,7 +41,7 @@ public:
             cerr << "getsockname() failed\n";
             exit(EXIT_FAILURE);
         }
-        portID = ntohl(sockin.sin_port);
+        portID = ntohs(sockin.sin_port);
         return portID;
     }
 
@@ -70,7 +70,7 @@ public:
     }
 
     int Start() {
-        SetUp("");
+        SetUp(NULL);
         struct sockaddr_in* addr_in = (struct sockaddr_in*)this->info_list->ai_addr;
         addr_in->sin_port = 0;
         SetSocket();
