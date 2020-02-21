@@ -29,7 +29,7 @@ public:
     potato() {
         hop = 0;
         nums = 0;
-        memset(trace, 0, sizeof(trace));
+        bzero(trace, sizeof(trace));
     }
     
     void Trace() {

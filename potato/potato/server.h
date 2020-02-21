@@ -17,7 +17,7 @@ public:
     int accept_fd;
     
     void SetUp(const char* args) {
-        memset(&master_info, 0, sizeof(master_info));
+        bzero(&master_info, sizeof(master_info));
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
         master_info.ai_flags = AI_PASSIVE;
