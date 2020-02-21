@@ -20,6 +20,7 @@
 #include <functional>
 #include <cstring>
 #include <arpa/inet.h>
+#include <string.h>
 #include "potato.h"
 
 class client {
@@ -32,7 +33,8 @@ public:
     void Connect(const char* MasterName, const char* port, int& sockets) {
         struct addrinfo master_info;
         struct addrinfo* info_list;
-        memset(&master_info, 0, sizeof(master_info));
+        bzero(&master_info, sizeof(master_info));
+        //memset(&master_info, 0, sizeof(master_info));
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
         
