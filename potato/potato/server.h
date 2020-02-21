@@ -33,11 +33,6 @@ public:
         }
     }
 
-    void SetPort() {
-        struct sockaddr_in* addr_in = (struct sockaddr_in*)this->info_list->ai_addr;
-        addr_in->sin_port = 0;
-    }
-
     int GetPort() {
         struct sockaddr_in sockin;
         socklen_t length = sizeof(sockin);
@@ -76,7 +71,8 @@ public:
 
     int Start() {
         SetUp("");
-        SetPort();
+        struct sockaddr_in* addr_in = (struct sockaddr_in*)this->info_list->ai_addr;
+        addr_in->sin_port = 0;
         SetSocket();
         int currPort = GetPort();
         return currPort;
@@ -84,8 +80,7 @@ public:
 
     void Start(const char* args) {
         SetUp(args);
-        struct sockaddr_in* addr_in = (struct sockaddr_in*)this->info_list->ai_addr;
-        addr_in->sin_port = 0;
+        SetSocket();
     }
     
     int Connection(string &IP){
