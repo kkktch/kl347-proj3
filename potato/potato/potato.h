@@ -24,14 +24,13 @@ public:
     int ID;
     int nums;
     vector<char> addr;
-    int trace[512];
+    vector<int> trace;
     
     potato() {
         hop = 0;
         nums = 0;
         memset(trace, 0, sizeof(trace));
-        //addr.resize(512);
-        //trace.resize(512);
+        trace.resize(512);
     }
     
     void Trace() {
