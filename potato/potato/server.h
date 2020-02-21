@@ -21,7 +21,7 @@ public:
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
         master_info.ai_flags = AI_PASSIVE;
-        if (strcmp(args, NULL) == 0) {
+        if (strcmp(args, "") == 0) {
             this->curr_status = getaddrinfo(NULL, "", &master_info, &info_list);
         } else {
             this->curr_status = getaddrinfo(NULL, args, &master_info, &info_list);
@@ -70,7 +70,7 @@ public:
     }
 
     int Start() {
-        SetUp(NULL);
+        SetUp("");
         struct sockaddr_in* addr_in = (struct sockaddr_in*)this->info_list->ai_addr;
         addr_in->sin_port = 0;
         SetSocket();
@@ -90,10 +90,11 @@ public:
         if (this->accept_fd == -1) {
             cerr << "Fail to connect\n";
             exit(EXIT_FAILURE);
+        } else {
+            struct sockaddr_in* temp = (struct sockaddr_in*)&socket_addr;
+            IP = inet_ntoa(temp->sin_addr);
+            return this->accept_fd;
         }
-        struct sockaddr_in* temp = (struct sockaddr_in*)&socket_addr;
-        IP = inet_ntoa(temp->sin_addr);
-        return this->accept_fd;
     }
     
     virtual ~server() {
