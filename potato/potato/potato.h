@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -37,11 +38,8 @@ public:
         cout << "Trace of potato:\n";
         for (int i = 0; i < nums; ++i) {
             cout << trace[i];
-            if (i == nums - 1) {
-                cout << endl;
-            } else {
-                cout << ',';
-            }
+            string END = (i == nums-1) ? "\n" : ", ";
+            cout << END;
         }
     }
     
