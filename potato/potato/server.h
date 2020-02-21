@@ -84,7 +84,8 @@ public:
 
     void Start(const char* args) {
         SetUp(args);
-        SetSocket();
+        struct sockaddr_in* addr_in = (struct sockaddr_in*)this->info_list->ai_addr;
+        addr_in->sin_port = 0;
     }
     
     int Connection(string &IP){
