@@ -54,7 +54,6 @@ public:
         srand((unsigned int)time(NULL) + ID);
         potato currPotato;
         fd_set rfd;
-        int sockets[] = {this->accept_fd, this->neigh, this->master};
         int nfd = 1;
         if (this->accept_fd > this->neigh) {
             nfd += this->accept_fd;
@@ -63,9 +62,9 @@ public:
         }
         while (1) {
             FD_ZERO(&rfd);
-            FD_SET(sockets[0], &rfd);
-            FD_SET(sockets[1], &rfd);
-            FD_SET(sockets[2], &rfd);
+            FD_SET(this->accept_fd, &rfd);
+            FD_SET(this->neigh, &rfd);
+            FD_SET(this->master, &rfd);
             int res = select(nfd, &rfd, NULL, NULL, NULL);
             if (res < 0) {
                 cerr << "Fail to select\n";
@@ -74,16 +73,16 @@ public:
                 cerr << "Time out\n";
                 exit(EXIT_FAILURE);
             } else{
-                if (FD_ISSET(sockets[0], &rfd)) {
-                    if (recv(sockets[0], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
+                if (FD_ISSET(this->accept_fd, &rfd)) {
+                    if (recv(this->accept_fd, &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
                         cerr << "Receive a broken potato\n";
                     }
-                } else if (FD_ISSET(sockets[1], &rfd)) {
-                    if (recv(sockets[1], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
+                } else if (FD_ISSET(this->neigh, &rfd)) {
+                    if (recv(this->neigh, &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
                         cerr << "Receive a broken potato\n";
                     }
-                } else if (FD_ISSET(sockets[2], &rfd)) {
-                    if (recv(sockets[2], &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
+                } else if (FD_ISSET(this->master, &rfd)) {
+                    if (recv(this->master, &currPotato, sizeof(currPotato), MSG_WAITALL) != sizeof(currPotato)) {
                         cerr << "Receive a broken potato\n";
                     }
                 }
@@ -92,9 +91,9 @@ public:
                     return;
                 }
                 
-                --currPotato.hop;
                 currPotato.trace[currPotato.nums] = this->ID;
                 ++currPotato.nums;
+                --currPotato.hop;
                 if (currPotato.hop == 0) {
                     if (send(this->master, &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
                         cerr << "Fail to send\n";

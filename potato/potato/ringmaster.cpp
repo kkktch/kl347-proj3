@@ -28,8 +28,8 @@ void ringmaster::BuildConnection() {
     for (int i = 0; i < this->player_num; ++i) {
         this->sockets[i] = Connection(this->IPAddrs[i]);
         send(this->sockets[i], &i, sizeof(i), 0);
-        send(this->sockets[i], &this->player_num, sizeof(this->player_num), 0);
         recv(this->sockets[i], &this->ports[i], sizeof(this->ports[i]), MSG_WAITALL);
+        send(this->sockets[i], &this->player_num, sizeof(this->player_num), 0);
         cout << "Player " << i << " is ready to play\n";
     }
 }
