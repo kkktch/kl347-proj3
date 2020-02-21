@@ -35,9 +35,8 @@ public:
 
     int GetPort() {
         struct sockaddr_in sockin;
-        socklen_t length = sizeof(sockin);
         int portID = 0;
-        if (getsockname(this->socket_fd, (struct sockaddr*)&sockin, &length) == -1) {
+        if (getsockname(this->socket_fd, (struct sockaddr*)&sockin, &sizeof(sockin)) == -1) {
             cerr << "getsockname() failed\n";
             exit(EXIT_FAILURE);
         }
