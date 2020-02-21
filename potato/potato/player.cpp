@@ -29,7 +29,8 @@ public:
     
     void Master(const char* MasterName, const char* port) {
         struct addrinfo master_info;
-        Connect(MasterName, port, this->master, master_info);
+        struct addrinfo* info_list;
+        Connect(MasterName, port, this->master, master_info, info_list);
         recv(this->master, &ID, sizeof(ID), 0);
         recv(this->master, &totalNum, sizeof(totalNum), 0);
         
@@ -46,8 +47,9 @@ public:
         
         char port_ID[10];
         struct addrinfo master_info;
+        struct addrinfo* info_list;
         sprintf(port_ID, "%d", neighPort);
-        Connect(neighAddr, port_ID, this->neigh, master_info);
+        Connect(neighAddr, port_ID, this->neigh, master_info, info_list);
         string IP;
         Connection(IP);
     }

@@ -30,8 +30,7 @@ public:
     int master;
     int neigh;
     
-    void Connect(const char* MasterName, const char* port, int& sockets, struct addrinfo master_info) {
-        struct addrinfo* info_list;
+    void Connect(const char* MasterName, const char* port, int& sockets, struct addrinfo master_info, struct addrinfo* info_list) {
         bzero(&master_info, sizeof(master_info));
         master_info.ai_family = AF_UNSPEC;
         master_info.ai_socktype = SOCK_STREAM;
