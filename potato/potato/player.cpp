@@ -104,12 +104,15 @@ public:
                 
                 int randPlayer = rand() % 2;
                 int targetPlayer;
+                int sendingTarget;
                 if (randPlayer == 0) {
                     targetPlayer = this->accept_fd;
+                    sendingTarget = (ID == 0) ? totalNum - 1 : ID - 1;
                 } else {
                     targetPlayer = this->neigh;
+                    sendingTarget = (ID == totalNum-1) ? 0 : ID + 1;
                 }
-                cout << "Sending potato to " << targetPlayer << endl;
+                cout << "Sending potato to " << sendingTarget << endl;
                 if (send(targetPlayer, &currPotato, sizeof(currPotato), 0) != sizeof(currPotato)) {
                     cerr << "Fail to send\n";
                 }
