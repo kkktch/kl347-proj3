@@ -24,16 +24,6 @@
 
 using namespace std;
 
-void ringmaster::BuildConnection() {
-    for (int i = 0; i < this->player_num; ++i) {
-        this->sockets[i] = Connection(this->IPAddrs[i]);
-        send(this->sockets[i], &i, sizeof(i), 0);
-        send(this->sockets[i], &this->player_num, sizeof(this->player_num), 0);
-        recv(this->sockets[i], &this->ports[i], sizeof(this->ports[i]), MSG_WAITALL);
-        cout << "Player " << i << " is ready to play\n";
-    }
-}
-
 void ringmaster::CreatCycle() {
     for (int i = 0; i < this->player_num; ++i) {
         int neighID = (i == this->player_num - 1) ? 0 : i + 1;
@@ -122,7 +112,13 @@ int main(int argc, char** argv) {
         cout << "Potato Ringmaster\n";
         cout << "Players = " << currMaster->player_num << endl;
         cout << "Hops = " << currMaster->hop_num << endl;
-        currMaster->BuildConnection();
+        for (int i = 0; i < currMaster->player_num; ++i) {
+            currMaster->sockets[i] = currMaster->Connection(currMaster->IPAddrs[i]);
+            send(currMaster->sockets[i], &i, sizeof(i), 0);
+            send(currMaster->sockets[i], &currMaster->player_num, sizeof(currMaster->player_num), 0);
+            recv(currMaster->sockets[i], &currMaster->ports[i], sizeof(currMaster->ports[i]), MSG_WAITALL);
+            cout << "Player " << i << " is ready to play\n";
+        }
         currMaster->CreatCycle();
         currMaster->GamePlay();
         currMaster->Close();

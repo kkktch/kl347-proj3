@@ -33,8 +33,6 @@ public:
     vector<int> sockets;
     vector<string> IPAddrs;
     
-    
-    void BuildConnection();
     void CreatCycle();
     void SendSockets(potato currPotato);
     void GamePlay();
